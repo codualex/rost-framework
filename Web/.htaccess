@@ -1,0 +1,10 @@
+#An optional way to specify the environment name.
+#SetEnv ROST_ENVIRONMENT Development
+
+#Standard Apache instructions to redirect traffic into index.php.
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	RewriteBase /
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
