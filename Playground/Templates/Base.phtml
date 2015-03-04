@@ -1,0 +1,14 @@
+<?php use Rost\View\Helper\Escaper as E ?>
+<?php use Rost\View\Helper\Section ?>
+
+<!DOCTYPE>
+<html>
+	<head>
+		<title>
+			<?= Section::Get('title') ?>
+		</title>
+	</head>
+	<body>
+		<?= Section::Get('content') ?>
+	</body>
+</html>

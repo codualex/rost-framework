@@ -1,0 +1,16 @@
+<?php use Rost\View\Helper\Escaper as E ?>
+<?php use Rost\View\Helper\Section ?>
+<?php use Rost\View\Helper\Template ?>
+<?php use Rost\View\Helper\Url ?>
+
+<?php Section::Begin('title') ?>
+	Index Title
+<?php Section::End() ?>
+
+<?php Section::Begin('content') ?>
+	<p>
+		Variable value: <?= E::Html($variable) ?>
+	</p>
+<?php Section::End() ?>
+
+<?= Template::Render('Base') ?>
