@@ -1,13 +1,13 @@
 <?php
 namespace Rost\Database\MySql;
 
+use IteratorAggregate;
+
 /**
 * Respesents a result set from the successfull database query.
 * It should be used to fetch rows. Though the rows can be fetched only once.
-* 
-* @todo Implement Iterator interface.
 */
-class ResultSet
+class ResultSet implements IteratorAggregate
 {
 	/**
 	* @var mysqli_result 
@@ -27,11 +27,11 @@ class ResultSet
 	/**
 	* Fetches the next row. Returns null if there are no more rows.
 	* 
-	* @return StdObject|null
+	* @return (string|null)[]|null
 	*/
 	function FetchRow()
 	{
-		return $this->mysqliResult->fetch_object();
+		return $this->mysqliResult->fetch_assoc();
 	}
 
 	/**
@@ -50,5 +50,16 @@ class ResultSet
 	function Free()
 	{
 		$this->mysqliResult->free();
+	}
+
+	/**
+	* Implements a method of the IteratorAggregate interface.
+	* This makes the object traversable using foreach.
+	* 
+	* @return Traversable
+	*/
+	function GetIterator()
+	{
+		return $this->mysqliResult;
 	}
 }

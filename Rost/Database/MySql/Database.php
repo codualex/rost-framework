@@ -16,6 +16,9 @@ namespace Rost\Database\MySql;
 * as: "array of strings", forms a set of strings for IN(...) clause;
 * n: "name", should be used for identifiers, like table and field names; 
 * r: "raw", should be used to inject raw data without escaping.
+* 
+* All types are null-aware. If you pass a null value then 'NULL' will be used,
+* it won't be converted based on the placeholder type.
 */
 class Database
 {
@@ -168,22 +171,16 @@ class Database
 	* 
 	* @param string $sql
 	* @param mixed[] $parameters
-	* @return StdClass[]
-	* @todo Check if we should free the result set.
+	* @return (string|null)[][]
 	*/
-	function QueryArray($sql, $parameters = [])
+	function QueryAll($sql, $parameters = [])
 	{
-		$rows = [];
-		
 		$resultSet = $this->Query($sql, $parameters);
 		if($resultSet)
 		{
-			while($row = $resultSet->FetchRow())
-			{
-				$rows[] = $row;
-			}
+			return iterator_to_array($resultSet);
 		}
-		return $rows;
+		return [];
 	}
 	
 	/**
@@ -192,8 +189,7 @@ class Database
 	* 
 	* @param string $sql
 	* @param mixed[] $parameters
-	* @return StdClass|null
-	* @todo Check if we should free the result set.
+	* @return (string|null)[]|null
 	*/
 	function QueryRow($sql, $parameters = [])
 	{
@@ -212,16 +208,13 @@ class Database
 	* @param string $sql
 	* @param mixed[] $parameters
 	* @return string|null
-	* @todo Check if we should free the result set.
-	* @todo Check if the result is always a string.
 	*/
 	function QueryValue($sql, $parameters = [])
 	{
-		$row = $this->QueryRow($sql, $parameters);
-		if($row)
+		$columns = $this->QueryRow($sql, $parameters);
+		if($columns)
 		{
-			$values = get_object_vars($row);
-			return reset($values);
+			return reset($columns);
 		}
 		return null;
 	}
@@ -347,7 +340,7 @@ class Database
 		if(!is_array($values))
 		{
 			throw new \InvalidArgumentException(sprintf(
-				'The value for "ai" type placeholder should be an array, % given.',
+				'The value for "ai" type placeholder should be an array, %s given.',
 				gettype($values)
 			));
 		}
@@ -374,7 +367,7 @@ class Database
 		if(!is_array($values))
 		{
 			throw new \InvalidArgumentException(sprintf(
-				'The value for "af" type placeholder should be an array, % given.',
+				'The value for "af" type placeholder should be an array, %s given.',
 				gettype($values)
 			));
 		}
@@ -401,7 +394,7 @@ class Database
 		if(!is_array($values))
 		{
 			throw new \InvalidArgumentException(sprintf(
-				'The value for "as" type placeholder should be an array, % given.',
+				'The value for "as" type placeholder should be an array, %s given.',
 				gettype($values)
 			));
 		}
