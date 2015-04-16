@@ -266,18 +266,21 @@ class PatternRoute implements RouteInterface
 	/**
 	* Assembles the route into URL.
 	*
-	* @param string[] $routeParameters
-	* @param string[] $queryParameters
+	* @param string[] $parameters
 	* @return string
 	*/
-	function Assemble($routeParameters = [], $queryParameters = [])
+	function Assemble($parameters = [])
 	{
-		$mergedParameters = array_merge($this->defaultParameters, $routeParameters);
+		$mergedParameters = array_merge($this->defaultParameters, $parameters);
 		$path = $this->BuildPath($this->tokens, $mergedParameters);
 		
-		if($queryParameters)
+		$knownParameterNames = $this->GetParameterNames($this->tokens);
+		$knownParametersAsIndexes = array_fill_keys($knownParameterNames, true);
+		$remainingParameters = array_diff_key($parameters, $knownParametersAsIndexes);
+		
+		if($remainingParameters)
 		{
-			return $path . '?' . http_build_query($queryParameters);
+			return $path . '?' . http_build_query($remainingParameters);
 		}
 		return $path;
 	}

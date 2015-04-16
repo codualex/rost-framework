@@ -57,15 +57,14 @@ class LiteralRoute implements RouteInterface
 	/**
 	* Assembles the route into URL.
 	*
-	* @param string[] $routeParameters Not in use for this route type.
-	* @param string[] $queryParameters
+	* @param string[] $parameters
 	* @return string
 	*/
-	function Assemble($routeParameters = [], $queryParameters = [])
+	function Assemble($parameters = [])
 	{
-		if($queryParameters)
+		if($parameters)
 		{
-			return $this->path . '?' . http_build_query($queryParameters);
+			return $this->path . '?' . http_build_query($parameters);
 		}
 		return $this->path;
 	}

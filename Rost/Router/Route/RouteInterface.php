@@ -20,9 +20,8 @@ interface RouteInterface
 	/**
 	* Assembles the route into URL.
 	*
-	* @param string[] $routeParameters
-	* @param string[] $queryParameters
+	* @param string[] $parameters
 	* @return string
 	*/
-	function Assemble($routeParameters = [], $queryParameters = []);
+	function Assemble($parameters = []);
 }

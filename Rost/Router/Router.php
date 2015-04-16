@@ -55,20 +55,19 @@ class Router
 	* Assembles the route into URL.
 	*
 	* @param string $name
-	* @param string[] $routeParameters
-	* @param string[] $queryParameters
+	* @param string[] $parameters
 	* @return string
 	* @throws \InvalidArgumentException If the given route name is unknown.
 	*/
-	function Assemble($name, $routeParameters = [], $queryParameters = [])
+	function Assemble($name, $parameters = [])
 	{
 		if(!isset($this->routes[$name]))
 		{
 			throw new \InvalidArgumentException(sprintf(
 				'Route named "%s" is unknown.',
 				$name
-    		));
+			));
 		}
-		return $this->routes[$name]->Assemble($routeParameters, $queryParameters);
+		return $this->routes[$name]->Assemble($parameters);
 	}
 }

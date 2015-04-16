@@ -12,13 +12,12 @@ class Url extends AbstractHelper
 	* Generates URL by the route name.
 	* 
 	* @param string $routeName
-	* @param string[] $routeParameters
-	* @param string[] $queryParameters
+	* @param string[] $parameters
 	* @return string
 	*/
-	static function Generate($routeName, $routeParameters = [], $queryParameters = [])
+	static function Generate($routeName, $parameters = [])
 	{
-		return static::$router->Assemble($routeName, $routeParameters, $queryParameters);
+		return static::$router->Assemble($routeName, $parameters);
 	}
 }
 

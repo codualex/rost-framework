@@ -99,13 +99,12 @@ abstract class StandardController
 	* Generates URL by the given route name and parameters.
 	* 
 	* @param string $routeName
-	* @param string[] $routeParameters
-	* @param string[] $queryParameters
+	* @param string[] $parameters
 	* @return string
 	*/
-	protected function Url($routeName, $routeParameters = [], $queryParameters = [])
+	protected function Url($routeName, $parameters = [])
 	{
-		return $this->dispatcherState->router->Assemble($routeName, $routeParameters, $queryParameters);
+		return $this->dispatcherState->router->Assemble($routeName, $parameters);
 	}
 
 	/**
@@ -118,5 +117,19 @@ abstract class StandardController
 	protected function Redirect($url, $statusCode = 301)
 	{
 		return new RedirectResponse($url, $statusCode);
+	}
+	
+	/**
+	* Returns the initialized RedirectResponce object.
+	* 
+	* @param string $routeName
+	* @param string[] $parameters
+	* @param int $statusCode The HTTP status code.
+	* @return RedirectResponse
+	*/
+	protected function RedirectToRoute($routeName, $parameters = [], $statusCode = 301)
+	{
+		$url = $this->Url($routeName, $parameters);
+		return $this->Redirect($url, $statusCode);
 	}
 }
